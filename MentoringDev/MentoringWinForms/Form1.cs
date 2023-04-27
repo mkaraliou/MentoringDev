@@ -17,13 +17,15 @@ namespace MentoringWinForms
 
             if (string.IsNullOrEmpty(username))
             {
+                outputLabel.Visible = false;
                 errorLabel.Text = error;
                 errorLabel.Visible = true;
             }
             else
             {
-                OutputLabel.Text = HelloHelper.CreateHelloPhrase(username);
-                OutputLabel.Visible = true;
+                errorLabel.Visible = false;
+                outputLabel.Text = HelloHelper.CreateHelloPhrase(username);
+                outputLabel.Visible = true;
             }
         }
     }

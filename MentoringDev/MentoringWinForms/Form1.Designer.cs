@@ -28,22 +28,22 @@
         /// </summary>
         private void InitializeComponent()
         {
-            OutputLabel = new Label();
+            outputLabel = new Label();
             UsernameLabel = new Label();
             tbUsername = new TextBox();
             okButton = new Button();
             errorLabel = new Label();
             SuspendLayout();
             // 
-            // OutputLabel
+            // outputLabel
             // 
-            OutputLabel.AutoSize = true;
-            OutputLabel.Location = new Point(411, 226);
-            OutputLabel.Name = "OutputLabel";
-            OutputLabel.Size = new Size(50, 20);
-            OutputLabel.TabIndex = 0;
-            OutputLabel.Text = "label1";
-            OutputLabel.Visible = false;
+            outputLabel.AutoSize = true;
+            outputLabel.Location = new Point(411, 226);
+            outputLabel.Name = "outputLabel";
+            outputLabel.Size = new Size(50, 20);
+            outputLabel.TabIndex = 0;
+            outputLabel.Text = "label1";
+            outputLabel.Visible = false;
             // 
             // UsernameLabel
             // 
@@ -82,6 +82,7 @@
             errorLabel.TabIndex = 4;
             errorLabel.Text = "Error";
             errorLabel.Visible = false;
+            errorLabel.ForeColor = System.Drawing.Color.Red;
             // 
             // Form1
             // 
@@ -92,7 +93,7 @@
             Controls.Add(okButton);
             Controls.Add(tbUsername);
             Controls.Add(UsernameLabel);
-            Controls.Add(OutputLabel);
+            Controls.Add(outputLabel);
             Name = "Form1";
             Text = "Hello User";
             ResumeLayout(false);
@@ -101,7 +102,7 @@
 
         #endregion
 
-        private Label OutputLabel;
+        private Label outputLabel;
         private Label UsernameLabel;
         private TextBox tbUsername;
         private Button okButton;
