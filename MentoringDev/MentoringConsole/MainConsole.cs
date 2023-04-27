@@ -6,8 +6,15 @@ namespace MentoringConsole
     {
         public static void Main(string[] args)
         {
-            VerifyArgs(args);
-            Console.WriteLine(HelloHelper.CreateHelloPhrase(args[0]));
+            try
+            {
+                VerifyArgs(args);
+                Console.WriteLine(HelloHelper.CreateHelloPhrase(args[0]));
+            }
+            catch (ArgumentException e)
+            {
+                Console.WriteLine(e.Message);
+            }
         }
 
         private static void VerifyArgs(string[] args)
