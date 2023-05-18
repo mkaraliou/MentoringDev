@@ -8,8 +8,9 @@ namespace MentoringConsole
         {
             try
             {
-                VerifyArgs(args);
-                Console.WriteLine(HelloHelper.CreateHelloPhrase(args[0]));
+                Console.WriteLine("dir");
+                //VerifyArgs(args);
+                //Console.WriteLine(HelloHelper.CreateHelloPhrase(args[0]));
             }
             catch (ArgumentException e)
             {
