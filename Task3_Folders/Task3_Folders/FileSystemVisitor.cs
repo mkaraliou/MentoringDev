@@ -47,20 +47,49 @@
             var directories = directory.GetDirectories();
             foreach (var dir in directories)
             {
+                var directoryPath = dir.FullName;
+
                 var directoryFoundEventArgs = new FolderFilesEventArgs()
                 {
-                    Path = dir.FullName,
+                    Path = directoryPath,
                 };
 
                 DirectoryFound?.Invoke(this, directoryFoundEventArgs);
 
-                if (!directoryFoundEventArgs.Skip && _predicate(dir.FullName))
+                if (!directoryFoundEventArgs.Skip && _predicate(directoryPath))
                 {
-                    yield return dir.FullName;
+                    var filteredDirectoryFoundEventArgs = new FolderFilesEventArgs()
+                    {
+                        Path = directoryPath,
+                    };
+
+                    FilteredDirectoryFound?.Invoke(this, filteredDirectoryFoundEventArgs);
+                    
+                    if (!filteredDirectoryFoundEventArgs.Skip)
+                    {
+                        yield return directoryPath;
+                    }
+                    else
+                    {
+                        //Console.WriteLine($"Skip filtered found directory {directoryPath}");
+                    }
+
+                    if (filteredDirectoryFoundEventArgs.Stop)
+                    {
+                        //Console.WriteLine($"Stop after filtered fould directory {directoryPath}");
+
+                        yield break;
+                    }
+                }
+                else
+                {
+                    //Console.WriteLine($"Skip found directory {directoryPath}");
                 }
 
                 if (directoryFoundEventArgs.Stop)
                 {
+                    //Console.WriteLine($"Stop after fould directory {directoryPath}");
+
                     yield break;
                 }
 
@@ -86,11 +115,37 @@
 
                 if (!fileFoundEventArgs.Skip && _predicate(fileName))
                 {
-                    yield return fileName;
+                    var filteredFilesFoundEventArgs = new FolderFilesEventArgs()
+                    {
+                        Path = fileName,
+                    };
+
+                    FilteredFileFound?.Invoke(this, filteredFilesFoundEventArgs);
+
+                    if (!filteredFilesFoundEventArgs.Skip)
+                    { 
+                        yield return fileName;
+                    }
+                    else
+                    {
+                        //Console.WriteLine($"Skip filtered found file {fileName}");
+                    }
+
+                    if (filteredFilesFoundEventArgs.Stop)
+                    {
+                        //Console.WriteLine($"Stop after filtered fould file {fileName}");
+                        yield break;
+                    }
+                }
+                else
+                {
+                    //Console.WriteLine($"Skip found file {fileName}");
                 }
 
                 if (fileFoundEventArgs.Stop)
                 {
+                    //Console.WriteLine($"Stop after fould file {fileName}");
+
                     yield break;
                 }
             }

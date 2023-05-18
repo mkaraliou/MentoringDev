@@ -6,8 +6,9 @@
         {
             try
             {
-                //VerifyArgs(args);
-                //RunWithoutPredicate(args);
+                VerifyArgs(args);
+                RunWithoutPredicate(args);
+                Console.WriteLine();
                 RunWithPredicate(args);
             }
             catch (ArgumentException e)
@@ -30,18 +31,19 @@
 
         private static void RunWithPredicate(string[] args)
         {
-            var filePath = "C:\\Users\\Mikalai_Karaliou\\Work\\MentoringDevelopment\\Task3_Folders\\TestProject1\\Folder1";
-            var visitor = new FileSystemVisitor(filePath); //x => x.Contains("F"));
+            var visitor = new FileSystemVisitor(args[0], x => !x.Contains(".txt"));
             visitor.Start += Start;
             visitor.Finish += Finish;
             visitor.FileFound += FileFound;
             visitor.DirectoryFound += DirectoryFound;
+            visitor.FilteredFileFound += FilteredFilesFound;
+            visitor.FilteredDirectoryFound += FilteredDirectoryFound;
 
             var collection = visitor.GetFoldersFilesRecursively();
 
             foreach (var value in collection)
             {
-                Console.WriteLine(value);
+                Console.WriteLine($"Value {value}");
             }
         }
 
@@ -55,25 +57,46 @@
 
         private static void DirectoryFound(object sender, FolderFilesEventArgs e)
         {
-            //if (e.Path.Contains("44"))
-            //{
-            //    e.Skip = true;
-            //}
-
-            //if (e.Path.Contains("44"))
-            //{
-            //    e.Stop = true;
-            //}
+            if (e.Path.Contains("44"))
+            {
+                e.Skip = true;
+            }
         }
 
         private static void FileFound(object sender, FolderFilesEventArgs e)
         {
-            if (e.Path.Contains(".txt"))
+            if (e.Path.Contains(".pptx"))
             {
                 e.Skip = true;
             }
 
             if (e.Path.Contains("3.docx"))
+            {
+                e.Stop = true;
+            }
+        }
+
+        private static void FilteredDirectoryFound(object sender, FolderFilesEventArgs e)
+        {
+            if (e.Path.Contains("Folder3"))
+            {
+                e.Skip = true;
+            }
+
+            if (e.Path.Contains("Folder6"))
+            {
+                e.Stop = true;
+            }   
+        }
+
+        private static void FilteredFilesFound(object sender, FolderFilesEventArgs e)
+        {
+            if (e.Path.Contains(".xl"))
+            {
+                e.Skip = true;
+            }
+
+            if (e.Path.Contains("File5.accdb"))
             {
                 e.Stop = true;
             }
