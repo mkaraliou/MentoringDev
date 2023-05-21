@@ -7,25 +7,12 @@
             try
             {
                 VerifyArgs(args);
-                RunWithoutPredicate(args);
                 Console.WriteLine();
                 RunWithPredicate(args);
             }
             catch (ArgumentException e)
             {
                 Console.WriteLine(e.Message);
-            }
-        }
-
-        private static void RunWithoutPredicate(string[] args)
-        {
-            var visitor = new FileSystemVisitor(args[0]);
-
-            var collection = visitor.GetFoldersFilesRecursively();
-
-            foreach (var value in collection)
-            {
-                Console.WriteLine(value);
             }
         }
 
@@ -39,11 +26,9 @@
             visitor.FilteredFileFound += FilteredFilesFound;
             visitor.FilteredDirectoryFound += FilteredDirectoryFound;
 
-            var collection = visitor.GetFoldersFilesRecursively();
-
-            foreach (var value in collection)
+            foreach (var value in visitor.GetFoldersFilesRecursively())
             {
-                Console.WriteLine($"Value {value}");
+                Console.WriteLine(value);
             }
         }
 
@@ -96,7 +81,7 @@
                 e.Skip = true;
             }
 
-            if (e.Path.Contains("File5.accdb"))
+            if (e.Path.Contains(".txt"))
             {
                 e.Stop = true;
             }
