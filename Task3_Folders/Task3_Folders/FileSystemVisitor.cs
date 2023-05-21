@@ -48,23 +48,18 @@
             var directories = directory.GetDirectories();
             foreach (var dir in directories)
             {
-                var directoryPath = dir.Name;
-
-                InvokeEvent(DirectoryFound, directoryPath);
-
                 if (_args.Stop)
                 {
                     yield break;
                 }
 
+                var directoryPath = dir.Name;
+
+                InvokeEvent(DirectoryFound, directoryPath);
+
                 if (!_args.Skip && _predicate(directoryPath))
                 {
                     InvokeEvent(FilteredDirectoryFound, directoryPath);
-
-                    if (_args.Stop)
-                    {
-                        yield break;
-                    }
 
                     if (!_args.Skip)
                     {
@@ -74,10 +69,7 @@
 
                 foreach (var value in GetFoldersFilesRecursively(dir))
                 {
-                    if (_predicate(value))
-                    {
-                        yield return value;
-                    }
+                    yield return value;
                 }
             }
 
@@ -91,23 +83,22 @@
         {
             foreach (var f in directory.GetFiles())
             {
-                var fileName = f.Name;
-
-                InvokeEvent(FileFound, fileName);
-
                 if (_args.Stop)
                 {
                     yield break;
                 }
 
+                var fileName = f.Name;
+
+                if (fileName.Contains("3.docx"))
+                {
+                }
+
+                InvokeEvent(FileFound, fileName);
+
                 if (!_args.Skip && _predicate(fileName))
                 {
                     InvokeEvent(FilteredFileFound, fileName);
-
-                    if (_args.Stop)
-                    {
-                        yield break;
-                    }
 
                     if (!_args.Skip)
                     {
@@ -119,9 +110,18 @@
 
         private void InvokeEvent(EventHandler<FolderFilesEventArgs> eventExample, string fullName)
         {
+            var stop = _args.Stop;
+            _args.Stop = false;
+            _args.Skip = false;
+
             _args.Path = fullName;
 
             eventExample?.Invoke(this, _args);
+
+            if (stop)
+            {
+                _args.Stop = true;
+            }
         }
     }
 }

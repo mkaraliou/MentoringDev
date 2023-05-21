@@ -7,7 +7,6 @@
             try
             {
                 VerifyArgs(args);
-                Console.WriteLine();
                 RunWithPredicate(args);
             }
             catch (ArgumentException e)
@@ -21,10 +20,10 @@
             var visitor = new FileSystemVisitor(args[0], x => !x.Contains(".txt"));
             visitor.Start += Start;
             visitor.Finish += Finish;
-            visitor.FileFound += FileFound;
             visitor.DirectoryFound += DirectoryFound;
-            visitor.FilteredFileFound += FilteredFilesFound;
             visitor.FilteredDirectoryFound += FilteredDirectoryFound;
+            visitor.FileFound += FileFound;
+            visitor.FilteredFileFound += FilteredFilesFound;
 
             foreach (var value in visitor.GetFoldersFilesRecursively())
             {
@@ -63,7 +62,7 @@
 
         private static void FilteredDirectoryFound(object sender, FolderFilesEventArgs e)
         {
-            if (e.Path.Contains("Folder3"))
+            if (e.Path.Contains("Folder6"))
             {
                 e.Skip = true;
             }
@@ -81,7 +80,7 @@
                 e.Skip = true;
             }
 
-            if (e.Path.Contains(".txt"))
+            if (e.Path.Contains(".xl"))
             {
                 e.Stop = true;
             }
