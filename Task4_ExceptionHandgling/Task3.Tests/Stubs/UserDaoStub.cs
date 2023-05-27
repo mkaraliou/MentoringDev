@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Task3.CustomException;
 using Task3.DoNotChange;
 
 namespace Task3.Tests.Stubs
@@ -12,9 +13,12 @@ namespace Task3.Tests.Stubs
 
         public IUser GetUser(int id)
         {
-            if (_data.ContainsKey(id))
-                return _data[id];
-            return null;
+            if (!_data.ContainsKey(id))
+            {
+                throw new UserNotFoundException();
+            }
+
+            return _data[id];
         }
     }
 }
