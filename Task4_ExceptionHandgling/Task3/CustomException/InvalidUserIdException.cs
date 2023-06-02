@@ -2,8 +2,8 @@
 
 namespace Task3.CustomException
 {
-    public class InvalidUserIdException : ArgumentOutOfRangeException
+    public class InvalidUserIdException : Exception
     {
-        public InvalidUserIdException(string message) : base(message) { }
+        public InvalidUserIdException() : base("Invalid userId") { }
     }
 }

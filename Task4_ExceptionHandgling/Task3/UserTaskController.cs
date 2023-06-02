@@ -1,4 +1,5 @@
-﻿using Task3.CustomException;
+﻿using System;
+using Task3.CustomException;
 using Task3.DoNotChange;
 
 namespace Task3
@@ -21,17 +22,9 @@ namespace Task3
                 var task = new UserTask(description);
                 _taskService.AddTaskForUser(userId, task);
             }
-            catch (InvalidUserIdException)
+            catch (Exception e)
             {
-                message = "Invalid userId";
-            }
-            catch (UserNotFoundException)
-            {
-                message = "User not found";
-            }
-            catch(TaskAlreadyExistsException)
-            {
-                message = "The task already exists";
+                message = e.Message;
             }
 
             if (message != null)

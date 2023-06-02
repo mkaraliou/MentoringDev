@@ -29,7 +29,7 @@ namespace Task2
             int multiplier = 1;
             var firstCharacter = stringValue.First();
 
-            if (firstCharacter  == Minus)
+            if (firstCharacter == Minus)
             {
                 multiplier = -1;
                 stringValue = stringValue.Remove(0, 1);
@@ -58,25 +58,15 @@ namespace Task2
         private int ParseStringWithTenCharacters(IEnumerable<int> intCollection, int multiplier)
         {
             var newCollection = intCollection.Take(_count - 1);
-            var result = (long)ParseCorrectInt(newCollection) * 10 + intCollection.ElementAt(_count - 1);
 
-            if (multiplier > 0)
+            var result = ((long)ParseCorrectInt(newCollection) * 10 + intCollection.ElementAt(_count - 1)) * multiplier;
+
+            if (result > int.MaxValue || result < int.MinValue)
             {
-                if (result > int.MaxValue)
-                {
-                    throw new OverflowException();
-                }
-            }
-            
-            if (multiplier < 0)
-            {
-                if (result > (long)int.MaxValue + 1)
-                {
-                    throw new OverflowException();
-                }
+                throw new OverflowException();
             }
 
-            return (int)(result * multiplier);
+            return (int)result;
         }
 
         private int ParseCorrectInt(IEnumerable<int> intCollection)

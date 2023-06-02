@@ -7,21 +7,40 @@ namespace Task1
     {
         private static void Main(string[] args)
         {
-            // TODO: Implement the task here.
-            if (args == null || args.Count() == 0)
+            try
             {
-                throw new ArgumentException("Args count should be more than 0.");
-            }
-
-            foreach (var arg in args) 
-            {
-                if (string.IsNullOrEmpty(arg))
+                // TODO: Implement the task here.
+                if (args == null || args.Count() == 0)
                 {
-                    throw new ArgumentException("Each line in args should not be null or empty.");
+                    throw new ArgumentException("Args count should be more than 0.");
                 }
 
-                Console.WriteLine($"\"{arg.First()}\"");
+                foreach (var arg in args)
+                {
+                    try
+                    {
+                        Console.WriteLine(GetFirstCharacter(arg));
+                    }
+                    catch (ArgumentException e)
+                    {
+                        Console.WriteLine($"Exception 1: {e.Message}");
+                    }
+                }
             }
+            catch(ArgumentException e)
+            {
+                Console.WriteLine($"Exception 2: {e.Message}");
+            }
+        }
+
+        private static char GetFirstCharacter(string stringValue)
+        {
+            if (string.IsNullOrEmpty(stringValue))
+            {
+                throw new ArgumentException("Each line in args should not be null or empty.");
+            }
+
+            return stringValue.First();
         }
     }
 }

@@ -17,10 +17,14 @@ namespace Task3
         {
             if (userId < 0)
             {
-                throw new InvalidUserIdException("UserId should not be less 0.");
+                throw new InvalidUserIdException();
             }
 
             var user = _userDao.GetUser(userId);
+            if (user == null)
+            {
+                throw new UserNotFoundException();
+            }
 
             var tasks = user.Tasks;
             foreach (var t in tasks)

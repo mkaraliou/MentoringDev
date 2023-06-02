@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Task3.CustomException;
 using Task3.DoNotChange;
 
 namespace Task3.Tests.Stubs
@@ -15,7 +14,7 @@ namespace Task3.Tests.Stubs
         {
             if (!_data.ContainsKey(id))
             {
-                throw new UserNotFoundException();
+                return null;
             }
 
             return _data[id];
