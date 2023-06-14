@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System.Reflection;
 using Task5_Reflection.Attributes;
 
@@ -8,12 +7,12 @@ namespace Task5_Reflection
 {
     public abstract class ConfigurationComponentBase
     {
-        private const string FilePath = "C:\\Users\\Mikalai_Karaliou\\source\\repos\\Task5_Reflection\\Task5_Reflection\\file.txt";
-        private const string AppConfigPath = "C:\\Users\\Mikalai_Karaliou\\source\\repos\\Task5_Reflection\\Task5_Reflection\\appsettings.json";
+        private const string FilePath = "C:\\Users\\Mikalai_Karaliou\\Work\\MentoringDevelopment\\MentoringDev\\Task5_Reflection\\Task5_Reflection\\file.txt";
+        private const string AppConfigPath = "C:\\Users\\Mikalai_Karaliou\\Work\\MentoringDevelopment\\MentoringDev\\Task5_Reflection\\Task5_Reflection\\appsettings.json";
         private const char delemetr = '=';
 
         private Dictionary<string, string> _fileContent = new Dictionary<string, string>();
-        private Dictionary<string, string> _configurationFileContent = new Dictionary<string, string>();
+        private ConfigurationRoot _appSettingConfiguration;
 
         public void SaveSettings()
         { 
@@ -24,10 +23,9 @@ namespace Task5_Reflection
             Type type = GetType();
             var properties = type.GetProperties();
 
-            foreach ( var property in properties )
+            foreach (var property in properties)
             {
-                SavePropertyToDictionary<ConfigurationManagerConfigurationItemAttribute>(property, _configurationFileContent);
-                SavePropertyToDictionary<FileConfigurationItemAttribute>(property, _fileContent);
+                SaveProperty123(property);
             }
 
             SavePropertyToFile();
@@ -41,8 +39,7 @@ namespace Task5_Reflection
 
             foreach (var property in GetType().GetProperties())
             {
-                SetValueToProperty<ConfigurationManagerConfigurationItemAttribute>(property, _configurationFileContent);
-                SetValueToProperty<FileConfigurationItemAttribute>(property, _fileContent);
+                SetValueToProperty(property);
             }
         }
 
@@ -67,28 +64,32 @@ namespace Task5_Reflection
 
             var firstProvider = configurationRoot.Providers.First();
 
-            var tempRoot = new ConfigurationRoot(new List<IConfigurationProvider>() { firstProvider });
-
-            _configurationFileContent = tempRoot.AsEnumerable().ToDictionary(a => a.Key, a => a.Value);
+            _appSettingConfiguration = new ConfigurationRoot(new List<IConfigurationProvider>() { firstProvider });
         }
 
-        private void SavePropertyToDictionary<T>(PropertyInfo property, Dictionary<string, string> content)
-            where T : ConfigurationItemBaseAttribute
+        private void SaveProperty123(PropertyInfo property)
         {
             var attributes = property.GetCustomAttributes(true);
 
-            if (attributes.Any(a => a is T))
+            if (attributes.Any(a => a is ConfigurationManagerConfigurationItemAttribute))
             {
-                var attribute = (T)attributes.First(a => a is T);
+                var attribute = (ConfigurationManagerConfigurationItemAttribute)attributes.First(a => a is ConfigurationManagerConfigurationItemAttribute);
 
-                content[attribute.SettingName] = property.GetValue(this).ToString();
+                _appSettingConfiguration[attribute.SettingName] = property.GetValue(this).ToString();
             }
 
+            if (attributes.Any(a => a is FileConfigurationItemAttribute))
+            {
+                var attribute = (FileConfigurationItemAttribute)attributes.First(a => a is FileConfigurationItemAttribute);
+
+                _fileContent[attribute.SettingName] = property.GetValue(this).ToString();
+            }
         }
 
         private void SavePropertyToConfigurationFile()
         {
-            var jsonContent = JsonConvert.SerializeObject(_configurationFileContent);
+            var k = _appSettingConfiguration.AsEnumerable().ToDictionary(a => a.Key, a => a.Value);
+            var jsonContent = JsonConvert.SerializeObject(_appSettingConfiguration.AsEnumerable().ToDictionary(a => a.Key, a => a.Value));
 
             FileReader.Write(AppConfigPath, jsonContent);
         }
@@ -106,18 +107,29 @@ namespace Task5_Reflection
             FileReader.Write(FilePath, contentToFile1);
         }
 
-        private void SetValueToProperty<T>(PropertyInfo property, Dictionary<string, string> content)
-            where T : ConfigurationItemBaseAttribute
+        private void SetValueToProperty(PropertyInfo property)
         {
             var attributes = property.GetCustomAttributes(true);
 
-            if (attributes.Any(a => a is T))
+            if (attributes.Any(a => a is ConfigurationManagerConfigurationItemAttribute))
             {
-                var attribute = (T)attributes.First(a => a is T);
+                var attribute = (ConfigurationManagerConfigurationItemAttribute)attributes.First(a => a is ConfigurationManagerConfigurationItemAttribute);
 
-                if (content.ContainsKey(attribute.SettingName))
+                var valueFromAppseetings = _appSettingConfiguration[attribute.SettingName];
+
+                if (valueFromAppseetings != null)
                 {
-                    SetValueToPropertyWithReflection(property, content[attribute.SettingName]);
+                    SetValueToPropertyWithReflection(property, valueFromAppseetings);
+                }
+            }
+
+            if (attributes.Any(a => a is FileConfigurationItemAttribute))
+            {
+                var attribute = (FileConfigurationItemAttribute)attributes.First(a => a is FileConfigurationItemAttribute);
+
+                if (_fileContent.ContainsKey(attribute.SettingName))
+                {
+                    SetValueToPropertyWithReflection(property, _fileContent[attribute.SettingName]);
                 }
             }
         }

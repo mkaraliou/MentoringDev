@@ -17,12 +17,14 @@ namespace Task5_Reflection
 
         public static void Write(string path, string content)
         {
-            using (FileStream fstream = new FileStream(path, FileMode.OpenOrCreate))
-            {
-                byte[] buffer = Encoding.Default.GetBytes(content);
+            File.WriteAllText(path, content);
 
-                fstream.Write(buffer, 0, buffer.Length);
-            }
+            //using (FileStream fstream = new FileStream(path, FileMode.OpenOrCreate))
+            //{
+            //    byte[] buffer = Encoding.Default.GetBytes(content);
+
+            //    fstream.Write(buffer, 0, buffer.Length);
+            //}
         }
     }
 }
