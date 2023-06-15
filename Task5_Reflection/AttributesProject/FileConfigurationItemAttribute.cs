@@ -1,4 +1,4 @@
-﻿namespace Task5_Reflection.Attributes
+﻿namespace AttributesProject
 {
     [AttributeUsage(AttributeTargets.Property)]
     public class FileConfigurationItemAttribute : ConfigurationItemBaseAttribute

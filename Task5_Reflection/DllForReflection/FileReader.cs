@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-namespace Task5_Reflection
+namespace DllForReflection
 {
     public static class FileReader
     {

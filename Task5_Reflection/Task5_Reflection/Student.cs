@@ -1,4 +1,4 @@
-﻿using Task5_Reflection.Attributes;
+﻿using AttributesProject;
 
 namespace Task5_Reflection
 {
