@@ -1,22 +1,29 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace Tasks
 {
     public class EnumeratorMy<T> : IEnumerator<T>
     {
-        private Node<T> Node; 
+        private Node<T> node;
+        private T currentElement;
+        private DoublyLinkedList<T> doublyLinkedList;
+        private int index = 0;
+
+        public EnumeratorMy(DoublyLinkedList<T> list)
+        {
+            doublyLinkedList = list;
+            node = list.NodeHead;
+            currentElement = default;
+        }
 
         public EnumeratorMy(Node<T> node)
         {
-            Node = node;
+            this.node = node;
         }
 
-        //public object Current => Node.Data;
-        public object Current => GetData();
+        public object Current => currentElement;
 
-        //T IEnumerator<T>.Current => Node.Data;
-        T IEnumerator<T>.Current => GetData();
+        T IEnumerator<T>.Current => currentElement;
 
         public void Dispose()
         {
@@ -24,31 +31,33 @@ namespace Tasks
 
         public bool MoveNext()
         {
-            if (Node != null)
+            if (index < doublyLinkedList.Length)
             {
+                currentElement = node.Data;
+                node = node.Next;
+                index++;
                 return true;
             }
-            else
-            {
-                return false;
-            }
+
+            //if (Node.Next != null)
+            //{
+            //    Node = Node.Next;
+            //    return true;
+            //}
+
+            return false;
         }
 
         public void Reset()
         {
-            while(Node.Previous != null)
-            {
-                Node = Node.Previous;
-            }
-        }
+            index = 0;
+            node = doublyLinkedList.NodeHead;
+            currentElement = default;
 
-        private T GetData()
-        {
-            var data = Node.Data;
-
-            Node = Node.Next;
-
-            return data;
+            //while(node.Previous != null)
+            //{
+            //    node = node.Previous;
+            //}
         }
     }
 }

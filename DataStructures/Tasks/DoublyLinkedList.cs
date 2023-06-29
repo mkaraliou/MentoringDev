@@ -7,26 +7,28 @@ namespace Tasks
 {
     public class DoublyLinkedList<T> : IDoublyLinkedList<T>
     {
-        private Node<T> NodeHead;
-        private Node<T> NodeTail;
+        private Node<T> nodeTail;
+        private Node<T> nodeHead;
+
+        public Node<T> NodeHead => nodeHead;
 
         public int Length { get; private set; }
 
         public void Add(T e)
         {
-            Node<T> newNode = new Node<T>(e);
+            var newNode = new Node<T>(e);
 
-            if (NodeTail == null)
+            if (nodeTail == null)
             {
-                NodeHead = newNode;
+                nodeHead = newNode;
             }
             else
             {
-                newNode.Previous = NodeTail;
-                NodeTail.Next = newNode;
+                newNode.Previous = nodeTail;
+                nodeTail.Next = newNode;
             }
 
-            NodeTail = newNode;
+            nodeTail = newNode;
             Length++;
         }
 
@@ -48,7 +50,7 @@ namespace Tasks
             if (index == 0)
             {
                 newNode.Next = NodeHead;
-                NodeHead = newNode;
+                nodeHead = newNode;
             }
 
             var previousNode = NodeAt(index - 1);
@@ -84,7 +86,7 @@ namespace Tasks
                     // End of the collection
                     if (currentNode.Next == null)
                     {
-                        NodeTail = currentNode.Previous;
+                        nodeTail = currentNode.Previous;
                     }
                     else
                     {
@@ -94,14 +96,13 @@ namespace Tasks
                     // Start of the collection
                     if (currentNode.Previous == null)
                     {
-                        NodeHead = currentNode.Next;
+                        nodeHead = currentNode.Next;
                     }
                     else
                     {
                         currentNode.Previous.Next = currentNode.Next;
                     }
 
-                    currentNode = null;
                     Length--;
                     return;
                 }
@@ -119,7 +120,7 @@ namespace Tasks
             if (index == 0)
             {
                 var element = NodeHead.Data;
-                NodeHead = NodeHead.Next;
+                nodeHead = NodeHead.Next;
                 NodeHead.Previous = null;
                 Length--;
                 return element;
@@ -127,10 +128,10 @@ namespace Tasks
             
             if (index == Length - 1)
             {
-                var element = NodeTail.Data;
+                var element = nodeTail.Data;
 
-                NodeTail = NodeTail.Previous;
-                NodeTail.Next = null;
+                nodeTail = nodeTail.Previous;
+                nodeTail.Next = null;
                 Length--;
                 return element;
             }
@@ -147,7 +148,7 @@ namespace Tasks
 
         public IEnumerator<T> GetEnumerator()
         {
-            return new EnumeratorMy<T>(NodeHead);
+            return new EnumeratorMy<T>(this);
         }
 
         IEnumerator IEnumerable.GetEnumerator()
@@ -157,7 +158,7 @@ namespace Tasks
 
         private Node<T> NodeAt(int index)
         {
-            Node<T> currentNode = NodeHead;
+            var currentNode = NodeHead;
 
             for (int i = index; i > 0; i--)
             {

@@ -19,7 +19,7 @@ namespace Tasks
                 throw new InvalidOperationException("Collection is empty");
             }
 
-            return _collection.ElementAt(0);
+            return _collection.RemoveAt(0);
         }
 
         public void Enqueue(T item)
@@ -34,7 +34,7 @@ namespace Tasks
                 throw new InvalidOperationException("Collection is empty");
             }
 
-            return _collection.ElementAt(_collection.Length - 1);
+            return _collection.RemoveAt(_collection.Length - 1);
         }
 
         public void Push(T item)
