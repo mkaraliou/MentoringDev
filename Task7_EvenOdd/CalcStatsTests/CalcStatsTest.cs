@@ -14,14 +14,14 @@ namespace CalcStatsTests
         [TestCase(new int[] { 35, 20, 15, 5, 0 }, "min = 0, max = 35, length = 5, average = 15")]
         [TestCase(new int[] { -5, 5, 15, 20, 35 }, "min = -5, max = 35, length = 5, average = 14")]
         [TestCase(new int[] { -5, -4, -3, -2, -1 }, "min = -5, max = -1, length = 5, average = -3")]
-        public void Test1(int[] array, string result)
+        public void GetStats_IntArray_RetirnsStatsResultString(int[] array, string result)
         {
             class1.GetStats(array).Should().Be(result); 
         }
 
         [TestCase(new int[] { })]
         [TestCase(null)]
-        public void Test2_Negative(int[] array)
+        public void GetStats_NullOrEmptyArray_ThrowsArgumentException(int[] array)
         {
             Action act = () => class1.GetStats(array);
 

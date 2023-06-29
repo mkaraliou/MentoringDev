@@ -14,24 +14,24 @@ namespace EvenOddTests
         [TestCase(100, 100, new string[] { "even" })]
         [TestCase(153, 153, new string[] { "odd" })]
         [TestCase(599, 599, new string[] { "599" })]
-        public void Test1_Positive(int first, int last, IEnumerable<string> result)
+        public void SomeM_PositiveFirstAndLast_ReturnsStringArray(int first, int last, IEnumerable<string> result)
         {
-            var k = class1.SomeM(first, last).ToList();
             class1.SomeM(first, last).Should().BeEquivalentTo(result);
         }
 
-        public void Test_NegativeNumbers()
+        [Test]
+        public void SomeM_NegativeFirstAndPositiveLast_ThrowsArgumentOutOfRangeException()
         {
-            Action act = () => class1.SomeM(-5, 7);
+            Action act = () => class1.SomeM(-5, 7).ToList();
 
             act.Should().Throw<ArgumentOutOfRangeException>();
         }
 
         [TestCase(10, 0)]
         [TestCase(5, -7)]
-        public void Test_FirstLessThenLast(int first, int last)
+        public void SomeM_LastMoreFirst_ThrowsArgumentException(int first, int last)
         {
-            Action act = () => class1.SomeM(first, last);
+            Action act = () => class1.SomeM(first, last).ToList();
 
             act.Should().Throw<ArgumentException>();
         }

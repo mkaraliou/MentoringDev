@@ -46,9 +46,13 @@ namespace DictionaryReplacerTest
                 new Dictionary<string, string>() { { "temp", "temporary" } },
                 "$temporary$ here comes the name");
 
-            yield return new TestCaseData("$$temp$$ here comes the name",
-                new Dictionary<string, string>() { { "temp", "temporary" }, { "temporary", "some" } },
+            yield return new TestCaseData("$sss $temp name$ sss$ here comes the name",
+                new Dictionary<string, string>() { { "temp name", "temporary" }, { "temporary", "some" } },
                 "some here comes the name");
+
+            yield return new TestCaseData("$$temp$$ here comes the name",
+                new Dictionary<string, string>() { { "temporary", "some" }, { "temp", "temporary" }  },
+                "some here comes the name"); //?
 
             yield return new TestCaseData("$$temp$ here comes$ here comes the name",
                 new Dictionary<string, string>() { { "temp", "temporary" }, { "temporary", "some" } },
@@ -67,13 +71,13 @@ namespace DictionaryReplacerTest
         }
 
         [TestCaseSource(nameof(TestDataDictipnaryReplacerPositive))]
-        public void TestDictionary_Positive(string value, Dictionary<string, string> dictionary, string expected)
+        public void ReplaceFromDictionary_CorrectStringAndDictionary_ReturnsReplacedStringByUsingDictionary(string value, Dictionary<string, string> dictionary, string expected)
         {
             class1.ReplaceFromDictionary(value, dictionary).Should().Be(expected);
         }
 
         [TestCaseSource(nameof(TestDataDictipnaryReplacerNegative))]
-        public void TestDictionary_Negative(string value, Dictionary<string, string> dictionary)
+        public void ReplaceFromDictionary_NullValueOrNullDictionary_ThrowsArgumentException(string value, Dictionary<string, string> dictionary)
         {
             Action act = () => class1.ReplaceFromDictionary(value, dictionary);
 

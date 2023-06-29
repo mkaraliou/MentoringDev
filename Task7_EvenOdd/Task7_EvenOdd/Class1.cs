@@ -14,19 +14,19 @@
                 throw new ArgumentException("Last number should be more then first.");
             }
 
-            //for (int i = first; i <= last; i++)
-            //{
-            //    yield return TransformToEvenOdd(i);
-            //}
-
-            var result = new List<string>();
-
             for (int i = first; i <= last; i++)
             {
-                result.Add(TransformToEvenOdd(i));
+                yield return TransformToEvenOdd(i);
             }
 
-            return result;
+            //var result = new List<string>();
+
+            //for (int i = first; i <= last; i++)
+            //{
+            //    result.Add(TransformToEvenOdd(i));
+            //}
+
+            //return result;
         }
 
         private string TransformToEvenOdd(int number)
