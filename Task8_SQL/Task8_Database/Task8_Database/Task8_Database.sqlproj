@@ -7,7 +7,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectVersion>4.1</ProjectVersion>
     <ProjectGuid>{086cadbb-bebd-4726-873e-e10b3b839145}</ProjectGuid>
-    <DSP>Microsoft.Data.Tools.Schema.Sql.Sql160DatabaseSchemaProvider</DSP>
+    <DSP>Microsoft.Data.Tools.Schema.Sql.Sql150DatabaseSchemaProvider</DSP>
     <OutputType>Database</OutputType>
     <RootPath>
     </RootPath>
@@ -56,11 +56,22 @@
   <Import Condition="'$(SQLDBExtensionsRefPath)' == ''" Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
   <ItemGroup>
     <Folder Include="Properties" />
+    <Folder Include="Tables" />
+    <Folder Include="Views" />
+    <Folder Include="Procuders" />
   </ItemGroup>
   <ItemGroup>
-    <Build Include="Person.sql" />
-    <Build Include="Address.sql" />
-    <Build Include="Employee.sql" />
-    <Build Include="Company.sql" />
+    <Build Include="Tables\Address.sql" />
+    <Build Include="Tables\Company.sql" />
+    <Build Include="Tables\Employee.sql" />
+    <Build Include="Tables\Person.sql" />
+    <Build Include="Views\EmployeeInfo.sql" />
+    <Build Include="Procuders\spInsertEmployeeInfo.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Task8_Database_Local.publish.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <PostDeploy Include="Script.PostDeployment1.sql" />
   </ItemGroup>
 </Project>
