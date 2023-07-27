@@ -17,14 +17,6 @@ namespace BrainstormSessions
     {
         public void ConfigureServices(IServiceCollection services)
         {
-            //var Configuration = ConfigurationHelper.GetConfigurationRoot();
-
-            Log.Logger = new LoggerConfiguration()
-               .WriteTo.File("C:\\Users\\Mikalai_Karaliou\\Work\\MentoringDevelopment\\Task9\\Logging\\log.txt")
-               .WriteTo.Console()
-               //.ReadFrom.Configuration(Configuration.GetSection("Serilog"))
-               .CreateLogger();
-
             services.AddDbContext<AppDbContext>(
                 optionsBuilder => optionsBuilder.UseInMemoryDatabase("InMemoryDb"));
 

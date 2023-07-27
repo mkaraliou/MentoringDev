@@ -24,6 +24,8 @@ namespace BrainstormSessions.Controllers
                     controllerName: "Home");
             }
 
+            Log.Logger.Debug("Id has no value");
+
             var session = await _sessionRepository.GetByIdAsync(id.Value);
             if (session == null)
             {
@@ -36,6 +38,8 @@ namespace BrainstormSessions.Controllers
                 Name = session.Name,
                 Id = session.Id
             };
+
+            Log.Logger.Debug($"Create StormSessionViewModel");
 
             return View(viewModel);
         }

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using BrainstormSessions.Api;
 using BrainstormSessions.Controllers;
@@ -8,9 +10,11 @@ using BrainstormSessions.Core.Interfaces;
 using BrainstormSessions.Core.Model;
 using log4net.Appender;
 using log4net.Config;
-using log4net.Core;
 using Moq;
 using Serilog;
+using Serilog.Events;
+using Serilog.Sinks.Email;
+using Serilog.Sinks.InMemory;
 using Xunit;
 
 namespace BrainstormSessions.Test.UnitTests
@@ -18,17 +22,36 @@ namespace BrainstormSessions.Test.UnitTests
     public class LoggingTests : IDisposable
     {
         private readonly MemoryAppender _appender;
+        public List<string> selfLogMessages = new List<string>();
 
         public LoggingTests()
         {
+            var emailInfo = new EmailConnectionInfo
+            {
+                EmailSubject = "Serilog Email Bug",
+                EnableSsl = true,
+                Port = 465,
+                FromEmail = "test12076133@gmail.com",
+                MailServer = "smtp.gmail.com",
+                ToEmail = "nikolayoliver815@gmail.com",
+
+                // Use app password
+                NetworkCredentials = new NetworkCredential("test12076133@gmail.com", "")
+            };
+
             Log.Logger = new LoggerConfiguration()
                .WriteTo.File("C:\\Users\\Mikalai_Karaliou\\Work\\MentoringDevelopment\\Task9\\Logging\\log.txt")
                .WriteTo.Console()
-               //.ReadFrom.Configuration(Configuration.GetSection("Serilog"))
+               .WriteTo.InMemory()
+               .WriteTo.Email(emailInfo)
+               .MinimumLevel.Verbose()
                .CreateLogger();
 
             _appender = new MemoryAppender();
             BasicConfigurator.Configure(_appender);
+
+            var file = File.CreateText("C:\\Users\\Mikalai_Karaliou\\Work\\MentoringDevelopment\\Task9\\Logging\\SelfLogs.txt");
+            Serilog.Debugging.SelfLog.Enable(TextWriter.Synchronized(file));
         }
 
         public void Dispose()
@@ -49,8 +72,7 @@ namespace BrainstormSessions.Test.UnitTests
             var result = await controller.Index();
 
             // Assert
-            var logEntries = _appender.GetEvents();
-            Assert.True(logEntries.Any(l => l.Level == Level.Info), "Expected Info messages in the logs");
+            Assert.True(InMemorySink.Instance.LogEvents.Any(l => l.Level == LogEventLevel.Information), "Expected Info messages in the logs");
         }
 
         [Fact]
@@ -69,7 +91,7 @@ namespace BrainstormSessions.Test.UnitTests
 
             // Assert
             var logEntries = _appender.GetEvents();
-            Assert.True(logEntries.Any(l => l.Level == Level.Warn), "Expected Warn messages in the logs");
+            Assert.True(InMemorySink.Instance.LogEvents.Any(l => l.Level == LogEventLevel.Warning), "Expected Warn messages in the logs");
         }
 
         [Fact]
@@ -85,7 +107,7 @@ namespace BrainstormSessions.Test.UnitTests
 
             // Assert
             var logEntries = _appender.GetEvents();
-            Assert.True(logEntries.Any(l => l.Level == Level.Error), "Expected Error messages in the logs");
+            Assert.True(InMemorySink.Instance.LogEvents.Any(l => l.Level == LogEventLevel.Error), "Expected Error messages in the logs");
         }
 
         [Fact]
@@ -104,7 +126,7 @@ namespace BrainstormSessions.Test.UnitTests
 
             // Assert
             var logEntries = _appender.GetEvents();
-            Assert.True(logEntries.Count(l => l.Level == Level.Debug) == 2, "Expected 2 Debug messages in the logs");
+            Assert.True(InMemorySink.Instance.LogEvents.Count(l => l.Level == LogEventLevel.Debug) == 2, "Expected 2 Debug messages in the logs");
         }
 
         private List<BrainstormSession> GetTestSessions()
