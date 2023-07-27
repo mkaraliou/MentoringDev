@@ -36,11 +36,11 @@ namespace BrainstormSessions.Test.UnitTests
                 ToEmail = "nikolayoliver815@gmail.com",
 
                 // Use app password, check Port and SSL
-                NetworkCredentials = new NetworkCredential("test12076133@gmail.com", "")
+                NetworkCredentials = new NetworkCredential("test12076133@gmail.com", "ofatoleojxomjjtf")
             };
 
             Log.Logger = new LoggerConfiguration()
-               .WriteTo.File("C:\\Users\\Mikalai_Karaliou\\Work\\MentoringDevelopment\\Task9\\Logging\\log.txt")
+               .WriteTo.File("C:\\Users\\Mikalai_Karaliou\\Work\\MentoringDevelopment\\MentoringDev\\Task9_Version2\\log.txt")
                .WriteTo.Console()
                .WriteTo.InMemory()
                .WriteTo.Email(emailInfo)
@@ -50,12 +50,15 @@ namespace BrainstormSessions.Test.UnitTests
             _appender = new MemoryAppender();
             BasicConfigurator.Configure(_appender);
 
-            var file = File.CreateText("C:\\Users\\Mikalai_Karaliou\\Work\\MentoringDevelopment\\Task9\\Logging\\SelfLogs.txt");
+            var file = File.CreateText("C:\\Users\\Mikalai_Karaliou\\Work\\MentoringDevelopment\\MentoringDev\\Task9_Version2\\SelfLogs.txt");
             Serilog.Debugging.SelfLog.Enable(TextWriter.Synchronized(file));
         }
 
         public void Dispose()
         {
+            // Использовать это, для того, чтобы Логи точно можно было получить по Email.
+            // При запуске тестов программа отрабатывает быстрее, чем логгер успеать записать логи ( в файл из Serilog и через Email)
+            Log.CloseAndFlush();
             _appender.Clear();
         }
 
