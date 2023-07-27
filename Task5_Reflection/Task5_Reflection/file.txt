@@ -1,5 +1,0 @@
-﻿Name = Nik
-Rating = 75,5
-Surname = Kek
-TimeSpan = 00:16:40
-Age = 23
