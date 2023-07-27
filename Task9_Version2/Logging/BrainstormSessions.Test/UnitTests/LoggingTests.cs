@@ -35,7 +35,7 @@ namespace BrainstormSessions.Test.UnitTests
                 MailServer = "smtp.gmail.com",
                 ToEmail = "nikolayoliver815@gmail.com",
 
-                // Use app password
+                // Use app password, check Port and SSL
                 NetworkCredentials = new NetworkCredential("test12076133@gmail.com", "")
             };
 
