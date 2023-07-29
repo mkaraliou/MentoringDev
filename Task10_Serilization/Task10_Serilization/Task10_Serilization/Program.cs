@@ -1,13 +1,15 @@
-﻿using Newtonsoft.Json;
-using System.Xml.Serialization;
-using System.Runtime.Serialization.Formatters.Binary;
-using System;
+﻿using JsonSerilizationProject;
+using XmlSerializationProject;
+using BinarySerilizationProject;
 
 namespace Task10_Serilization
 {
     public class Program
     {
-        private static string folder = "C:\\Users\\Mikalai_Karaliou\\Work\\MentoringDevelopment\\MentoringDev\\Task10_Serilization\\Task10_Serilization\\Files\\";
+        private const string folder = "C:\\Users\\Mikalai_Karaliou\\Work\\MentoringDevelopment\\MentoringDev\\Task10_Serilization\\Task10_Serilization\\Files\\";
+        private const string jsonPath = "jsonfile.json";
+        private const string xmlPath = "xmlFile.xml";
+        private const string binaryPath = "binaryFile.txt";
 
         public static void Main()
         {
@@ -29,16 +31,11 @@ namespace Task10_Serilization
                 }
             };
 
-            // serialization
-            string output = JsonConvert.SerializeObject(departmentJson);
+            var repository = new JsonDepartmentRepository(folder + jsonPath);
 
-            var fileHelperJson = new FileHelper(folder + "jsonfile.json");
+            repository.Serialize(departmentJson);
 
-            fileHelperJson.WriteToFile(output);
-
-            // deserialization
-            string inFileContent = fileHelperJson.ReadFromFile();
-            JsonSerilizationProject.Department department = JsonConvert.DeserializeObject<JsonSerilizationProject.Department>(inFileContent);
+            var department = repository.Deserialize();
         }
 
         private static void ShowXML()
@@ -54,22 +51,11 @@ namespace Task10_Serilization
                 }
             };
 
-            // передаем в конструктор тип класса Department
-            XmlSerializer xmlSerializer = new XmlSerializer(typeof(XmlSerializationProject.Department));
+            var repository = new XmlDepartmentRepository(folder + xmlPath);
 
-            // получаем поток, куда будем записывать сериализованный объект
-            using (FileStream fs = new FileStream(folder + "xmlFile.xml", FileMode.OpenOrCreate))
-            {
-                xmlSerializer.Serialize(fs, departmentXml);
-            }
+            repository.Serialize(departmentXml);
 
-            XmlSerializationProject.Department? department = null;
-
-            // десериализуем объект
-            using (FileStream fs = new FileStream(folder + "xmlFile.xml", FileMode.OpenOrCreate))
-            {
-                department = xmlSerializer.Deserialize(fs) as XmlSerializationProject.Department;
-            }
+            var department = repository.Deserialize();
         }
 
         private static void ShowBinary()
@@ -85,20 +71,11 @@ namespace Task10_Serilization
                 }
             };
 
-            // создаем объект BinaryFormatter
-            BinaryFormatter formatter = new BinaryFormatter();
-            // получаем поток, куда будем записывать сериализованный объект
-            using (FileStream fs = new FileStream(folder + "binaryFile.txt", FileMode.OpenOrCreate))
-            {
-                formatter.Serialize(fs, departmentBinary);
-            }
+            var repository = new BinaryDepartmentRepository(folder + binaryPath);
 
-            BinarySerilizationProject.Department department = null;
-            // десериализация
-            using (FileStream fs = new FileStream(folder + "binaryFile.txt", FileMode.OpenOrCreate))
-            {
-                department = (BinarySerilizationProject.Department)formatter.Deserialize(fs);
-            }
+            repository.Serialize(departmentBinary);
+
+            var department = repository.Deserialize();
         }
     }
 }

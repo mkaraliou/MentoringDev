@@ -1,12 +1,12 @@
 ﻿using System.Text;
 
-namespace Task10_Serilization
+namespace BaseSerializationProject
 {
     public class FileHelper
     {
         public string FilePath { get; set; }
 
-        public FileHelper(string filePath) 
+        public FileHelper(string filePath)
         {
             FilePath = filePath;
         }

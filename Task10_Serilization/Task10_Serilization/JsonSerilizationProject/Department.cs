@@ -1,5 +1,4 @@
-﻿
-namespace JsonSerilizationProject
+﻿namespace JsonSerilizationProject
 {
     public class Department
     {
