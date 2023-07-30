@@ -24,5 +24,11 @@ namespace JsonSerilizationProject
             string output = JsonConvert.SerializeObject(entity);
             fileHelper.WriteToFile(output);
         }
+
+        public Department DeepCloning(Department entity)
+        {
+            Serialize(entity);
+            return Deserialize();
+        }
     }
 }

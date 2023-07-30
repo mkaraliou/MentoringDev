@@ -13,9 +13,9 @@ namespace Task10_Serilization
 
         public static void Main()
         {
-            ShowJsonSerialization();
+            //ShowJsonSerialization();
             ShowXML();
-            ShowBinary();
+            //ShowBinary();
         }
 
         private static void ShowJsonSerialization()
@@ -36,18 +36,26 @@ namespace Task10_Serilization
             repository.Serialize(departmentJson);
 
             var department = repository.Deserialize();
+
+            var department1 = repository.DeepCloning(department);
+            var department2 = department;
+
+            var k = department1 == department2;
+            var k1 = department1.Equals(department2);
+
+            department1.DepartmentName = "Mik";
         }
 
         private static void ShowXML()
         {
             var departmentXml = new XmlSerializationProject.Department()
             {
-                DepartmentName = "XmlD",
+                DepartmentName = "XmlDep",
                 Employees = new List<XmlSerializationProject.Employee>()
                 {
-                    new XmlSerializationProject.Employee() { EmpoyeeName = "XmlE6" },
-                    new XmlSerializationProject.Employee() { EmpoyeeName = "XmlE7" },
-                    new XmlSerializationProject.Employee() { EmpoyeeName = "XmlE8" }
+                    new XmlSerializationProject.Employee() { EmpoyeeName = "XmlE10" },
+                    new XmlSerializationProject.Employee() { EmpoyeeName = "XmlE11" },
+                    new XmlSerializationProject.Employee() { EmpoyeeName = "XmlE12" }
                 }
             };
 
