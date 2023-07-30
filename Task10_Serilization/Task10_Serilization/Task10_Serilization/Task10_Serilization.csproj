@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\BinarySerilizationProject\BinarySerilizationProject.csproj" />
+    <ProjectReference Include="..\IserializalableInterfaceProject\IserialilazableInterfaceProject.csproj" />
     <ProjectReference Include="..\JsonSerilizationProject\JsonSerilizationProject.csproj" />
     <ProjectReference Include="..\XmlSerializationProject\XmlSerializationProject.csproj" />
   </ItemGroup>

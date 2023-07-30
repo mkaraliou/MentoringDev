@@ -62,6 +62,7 @@ namespace Task10_Serilization
         {
             var departmentBinary = new BinarySerilizationProject.Department()
             {
+                DepartmentId = 1000,
                 DepartmentName = "BinaryD",
                 Employees = new List<BinarySerilizationProject.Employee>()
                 {

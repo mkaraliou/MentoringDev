@@ -17,7 +17,7 @@ namespace BinarySerilizationProject
             // десериализация
             using (FileStream fs = new FileStream(_filePath, FileMode.OpenOrCreate))
             {
-                return (BinarySerilizationProject.Department)formatter.Deserialize(fs);
+                return (Department)formatter.Deserialize(fs);
             }
         }
 
