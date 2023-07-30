@@ -13,9 +13,9 @@ namespace Task10_Serilization
 
         public static void Main()
         {
-            //ShowJsonSerialization();
+            ShowJsonSerialization();
             ShowXML();
-            //ShowBinary();
+            ShowBinary();
         }
 
         private static void ShowJsonSerialization()
